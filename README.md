@@ -11,9 +11,14 @@ Agents that utilize LLMs can be powerful tools, but if you accept to run a comma
 
 Being a cautious creature, we here create a safe and controlled environment for testing, the agents are run in a sandboxed environment. This allows us to evaluate their performance without risking any damage to the system or data. We use apptainer to create and manage the sandboxed environment, which provides a secure and isolated environment for running the agents. This can make it harder to run code from the agents, but it also ensures that the agents cannot cause any harm to the system or data, outside the folder that we share with the container.
 
+Another concern voiced is that all LLMs that you call with an api, will have access to the data that you share with them, and that they may use this data for training or other purposes. This is a valid concern, and it is important to be aware of the privacy implications of using these agents. It is always a good idea to review the privacy policies of the agents and the LLMs that they use, and to be cautious about sharing sensitive data with them. If you are concerned about privacy, you may want to consider using agents that allow you to run your own instance of the LLM, or that have strict privacy policies in place.
+
 ## Pre-requisites
 - apptainer installed on the system
 - access to the agents (e.g., copilot cli, claude code, chatgpt codex-cli, aider) This may require signing up for an account and obtaining an API key, depending on the agent.
+
+## Status
+- Copilot CLI: tested and working in the apptainer container. Others: not even started yet.
 
 ## Agents
 
@@ -21,6 +26,7 @@ Being a cautious creature, we here create a safe and controlled environment for 
 - **Description**: Copilot CLI is a command-line interface that allows developers to interact with GitHub Copilot, an AI-powered code completion tool. It provides a way to use Copilot's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [into copilot-cli](https://developer.microsoft.com/blog/get-started-with-github-copilot-cli-a-free-hands-on-course)
 - [copilot-cli on github](https://github.com/github/copilot-cli)
+- **copilot-cli tests**: See [copilot-cli/README.md](copilot-cli/README.md) for more details on the tests performed with copilot-cli.
 
 ## Claude code
 - **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
