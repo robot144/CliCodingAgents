@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Maintainer github-copilot
+    Description Apptainer image with GitHub Copilot CLI installed
+
+%environment
+    export PATH=/usr/local/bin:$PATH
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git
+    rm -rf /var/lib/apt/lists/*
+
+    curl -fsSL https://gh.io/copilot-install | bash
+
+%runscript
+    exec /usr/local/bin/copilot "$@"
