@@ -1,0 +1,27 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Maintainer openai-codex
+    Description Apptainer image with OpenAI Codex CLI installed
+
+%environment
+    export PATH=/usr/local/bin:$PATH
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        nodejs \
+        npm
+    rm -rf /var/lib/apt/lists/*
+
+    npm install -g @openai/codex
+
+%runscript
+    exec /usr/local/bin/codex "$@"

@@ -35,6 +35,7 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 ## ChatGPT codex-cli
 - **Description**: ChatGPT Codex CLI is a command-line interface that allows developers to interact with OpenAI's Codex, an AI model designed for code generation and understanding. It provides a way to use Codex's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [ChatGPT Codex CLI documentation](https://developers.openai.com/codex/cli/)
+- **ChatGPT Codex CLI tests**: See [chatgpt-codex-cli/README.md](chatgpt-codex-cli/README.md) for more details on the tests performed with ChatGPT Codex CLI.
 
 ## Aider
 - **Description**: Aider is an AI-powered code assistant that helps developers with various coding tasks, such as code generation, code review, and debugging. It uses advanced language models to understand the context of the code and provide relevant suggestions and assistance. Aider aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.

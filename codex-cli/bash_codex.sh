@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$script_dir"
 
-image="$repo_root/copilot-cli.sif"
+image="$repo_root/codex-cli.sif"
 bind_path="$PWD"
 home_dir_host="$bind_path/.apptainer-home"
 home_dir_container="/workspace/.apptainer-home"
@@ -21,7 +21,7 @@ fi
 
 if [[ ! -f "$image" ]]; then
   echo "Image not found: $image" >&2
-  echo "Build it first with: ./build_copilot.sh" >&2
+  echo "Build it first with: ./build_codex.sh" >&2
   exit 1
 fi
 
@@ -32,8 +32,6 @@ echo "Using host home: $home_dir_host"
 echo "Container home target: $home_dir_container"
 echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
-echo "Type 'copilot' to start the Copilot CLI inside the container."
-echo "Copilot commands start with a /, for example: /help"
-echo "Use '/login' to authenticate with GitHub Copilot if needed."
-echo "and /model to switch between available models."
+echo "Type 'codex' to start the OpenAI Codex CLI inside the container."
+echo "The first time you run it, authenticate with your ChatGPT account or an API key."
 exec apptainer shell --no-home --home "$home_dir_host" --bind "$bind_path:/workspace" --pwd /workspace "$image"
