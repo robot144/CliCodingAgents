@@ -18,7 +18,10 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 - access to the agents (e.g., copilot cli, claude code, chatgpt codex-cli, aider) This may require signing up for an account and obtaining an API key, depending on the agent.
 
 ## Status
-- Copilot CLI: tested and working in the apptainer container. Others: not even started yet.
+- Copilot CLI: tested and working in the apptainer container.
+- ChatGPT Codex CLI: tested and working in the apptainer container.
+- Mistral Devstral: under research
+- Claude Code: under research
 
 ## Agents
 
@@ -27,15 +30,18 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 - [into copilot-cli](https://developer.microsoft.com/blog/get-started-with-github-copilot-cli-a-free-hands-on-course)
 - [copilot-cli on github](https://github.com/github/copilot-cli)
 - **copilot-cli tests**: See [copilot-cli/README.md](copilot-cli/README.md) for more details on the tests performed with copilot-cli.
-
-## Claude code
-- **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
- - [Claude code documentation](https://code.claude.com/docs/en/overview)
-
 ## ChatGPT codex-cli
 - **Description**: ChatGPT Codex CLI is a command-line interface that allows developers to interact with OpenAI's Codex, an AI model designed for code generation and understanding. It provides a way to use Codex's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [ChatGPT Codex CLI documentation](https://developers.openai.com/codex/cli/)
 - **ChatGPT Codex CLI tests**: See [chatgpt-codex-cli/README.md](chatgpt-codex-cli/README.md) for more details on the tests performed with ChatGPT Codex CLI.
+
+## Mistral Vibe cli and Devstral2
+- **Description**: Mistral Devstral is an AI-powered code generation tool developed by Mistral. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Mistral Devstral aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
+- [mistral vibe cli documentation](https://mistral.ai/news/devstral-2-vibe-cli)
+
+## Claude code
+- **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
+ - [Claude code documentation](https://code.claude.com/docs/en/overview)
 
 ## Aider
 - **Description**: Aider is an AI-powered code assistant that helps developers with various coding tasks, such as code generation, code review, and debugging. It uses advanced language models to understand the context of the code and provide relevant suggestions and assistance. Aider aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
