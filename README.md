@@ -22,6 +22,8 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 - ChatGPT Codex CLI: tested and working in the apptainer container.
 - Mistral Vibe CLI: tested and working in the apptainer container.
 - Claude Code: tested and working in the apptainer container.
+- **pixi** added to the Claude Code container for Python and multi-language environment management.
+  - We aim to add pixi to the other containers as well, but for now it is only available in the Claude Code container. The first tests look promising, and it seems to work well in the container. It is a great tool for managing Python environments, and it can be used to create isolated environments for testing different versions of packages or for testing code that has different dependencies.
 
 ## Agents
 
@@ -30,26 +32,32 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 - [into copilot-cli](https://developer.microsoft.com/blog/get-started-with-github-copilot-cli-a-free-hands-on-course)
 - [copilot-cli on github](https://github.com/github/copilot-cli)
 - **copilot-cli tests**: See [copilot-cli/README.md](copilot-cli/README.md) for more details on the tests performed with copilot-cli.
+
 ## ChatGPT codex-cli
 - **Description**: ChatGPT Codex CLI is a command-line interface that allows developers to interact with OpenAI's Codex, an AI model designed for code generation and understanding. It provides a way to use Codex's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [ChatGPT Codex CLI documentation](https://developers.openai.com/codex/cli/)
 - **ChatGPT Codex CLI tests**: See [chatgpt-codex-cli/README.md](chatgpt-codex-cli/README.md) for more details on the tests performed with ChatGPT Codex CLI.
 
-## Mistral Vibe cli and Devstral2
-- **Description**: Mistral Devstral is an AI-powered code generation tool developed by Mistral. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Mistral Devstral aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
-- [mistral vibe cli documentation](https://mistral.ai/news/devstral-2-vibe-cli)
-- [Codestral CLI page](https://console.mistral.ai/codestral/cli)
+## Mistral Vibe CLI
+- **Description**: Mistral Vibe CLI is an AI-powered code generation tool developed by Mistral. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Mistral Vibe CLI aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
+- [Mistral Vibe CLI documentation](https://mistral.ai/news/devstral-2-vibe-cli)
+- [Codestral CLI console page](https://console.mistral.ai/codestral/cli)
 - **Mistral Vibe CLI tests**: See [mistral-cli/README.md](mistral-cli/README.md) for more details on running the Mistral Vibe CLI in an Apptainer container.
 
 ## Claude code
 - **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
- - [Claude code documentation](https://code.claude.com/docs/en/overview)
+- [Claude code documentation](https://code.claude.com/docs/en/overview)
 - **Claude Code tests**: See [claude-cli/README.md](claude-cli/README.md) for more details on the tests performed with Claude Code.
 
-## Aider
-- **Description**: Aider is an AI-powered code assistant that helps developers with various coding tasks, such as code generation, code review, and debugging. It uses advanced language models to understand the context of the code and provide relevant suggestions and assistance. Aider aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
-- [Homepage Aider](https://aider.chat/)
+### pixi — Python & multi-language environment manager
 
+The Claude Code container includes [pixi](https://pixi.sh), a fast, Rust-based package manager built on conda-forge. It allows you to create reproducible environments with Python, R, and compiled libraries (NumPy, GDAL, NetCDF4, CUDA, etc.) without needing system-level installs. Unlike pip/venv, pixi resolves both Python packages and native dependencies together, making it well suited for scientific and data-heavy projects. Environments are stored inside the project folder and persist across container sessions via `.apptainer-home`. 
+
+```bash
+pixi init myproject && cd myproject # initialise a new project
+pixi add python numpy xarray # add packages (from conda-forge and PyPI)
+pixi run python script.py # run a script inside the environment
+```
 
 ## Other links
 - [apptainer documentation](https://apptainer.org/docs/)

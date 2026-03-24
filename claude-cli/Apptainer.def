@@ -6,7 +6,7 @@ From: ubuntu:24.04
     Description Apptainer image with Claude Code CLI installed
 
 %environment
-    export PATH=/root/.local/bin:/usr/local/bin:$PATH
+    export PATH=/root/.pixi/bin:/root/.local/bin:/usr/local/bin:$PATH
 
 %post
     set -e
@@ -21,6 +21,9 @@ From: ubuntu:24.04
     rm -rf /var/lib/apt/lists/*
 
     curl -fsSL https://claude.ai/install.sh | bash
+
+    # Install pixi (Python/multi-language package manager)
+    curl -fsSL https://pixi.sh/install.sh | bash
 
 %runscript
     exec claude "$@"

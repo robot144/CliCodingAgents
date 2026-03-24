@@ -12,7 +12,7 @@ From this folder:
 
 This produces `claude-cli.sif` in the same directory.
 
-## Run Copilot CLI
+## Run Claude Code CLI
 
 From any folder you want to work in, run:
 
@@ -34,6 +34,23 @@ claude
 cd test_folder
 ../bash_claude.sh
 ```
+
+## Python environments with pixi
+
+The container includes [pixi](https://pixi.sh), a fast multi-language package manager (conda-forge + PyPI). Use it to create isolated Python environments for testing inside the container:
+
+```bash
+# initialise a new project
+pixi init myproject && cd myproject
+
+# add packages
+pixi add python numpy xarray
+
+# run a script
+pixi run python script.py
+```
+
+Pixi environments are stored inside the project folder and persist across sessions via `.apptainer-home`.
 
 ## Notes
 
