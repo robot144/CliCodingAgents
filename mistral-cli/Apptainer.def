@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Maintainer mistral-vibe
+    Description Apptainer image with Mistral Vibe CLI installed
+
+%environment
+    export PATH=/root/.local/bin:$PATH
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        python3
+    rm -rf /var/lib/apt/lists/*
+
+    # Install uv package manager
+    curl -LsSf https://astral.sh/uv/install.sh | bash
+
+    # Install mistral-vibe CLI via uv
+    /root/.local/bin/uv tool install mistral-vibe
+
+%runscript
+    exec /root/.local/bin/vibe "$@"

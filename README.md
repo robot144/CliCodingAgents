@@ -20,7 +20,7 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 ## Status
 - Copilot CLI: tested and working in the apptainer container.
 - ChatGPT Codex CLI: tested and working in the apptainer container.
-- Mistral Devstral: under research
+- Mistral Vibe CLI: tested and working in the apptainer container.
 - Claude Code: tested and working in the apptainer container.
 
 ## Agents
@@ -38,6 +38,8 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 ## Mistral Vibe cli and Devstral2
 - **Description**: Mistral Devstral is an AI-powered code generation tool developed by Mistral. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Mistral Devstral aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
 - [mistral vibe cli documentation](https://mistral.ai/news/devstral-2-vibe-cli)
+- [Codestral CLI page](https://console.mistral.ai/codestral/cli)
+- **Mistral Vibe CLI tests**: See [mistral-cli/README.md](mistral-cli/README.md) for more details on running the Mistral Vibe CLI in an Apptainer container.
 
 ## Claude code
 - **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$script_dir"
+
+image="$repo_root/mistral-cli.sif"
+bind_path="$PWD"
+home_dir_host="$bind_path/.apptainer-home"
+home_dir_container="/workspace/.apptainer-home"
+
+if ! command -v apptainer >/dev/null 2>&1; then
+  echo "apptainer is not installed or not on PATH" >&2
+  exit 1
+fi
+
+if [[ ! -d "$bind_path" ]]; then
+  echo "Bind path is not a directory: $bind_path" >&2
+  exit 1
+fi
+
+if [[ ! -f "$image" ]]; then
+  echo "Image not found: $image" >&2
+  echo "Build it first with: ./build_mistral.sh" >&2
+  exit 1
+fi
+
+if [[ -z "${MISTRAL_API_KEY:-}" ]]; then
+  echo "Warning: MISTRAL_API_KEY is not set. Set it before running mistral-vibe." >&2
+fi
+
+mkdir -p "$home_dir_host"
+
+echo "Mounting current folder into container: $bind_path to /workspace"
+echo "Using host home: $home_dir_host"
+echo "Container home target: $home_dir_container"
+echo "Starting shell in container: $image"
+echo "Use 'exit' to leave the container shell."
+echo "Type 'vibe' to start the Mistral Vibe CLI inside the container."
+exec apptainer shell --no-home --home "$home_dir_host" \
+  --bind "$bind_path:/workspace" \
+  --env "MISTRAL_API_KEY=${MISTRAL_API_KEY:-}" \
+  --pwd /workspace "$image"
