@@ -47,6 +47,9 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 ## Claude code
 - **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
 - [Claude code documentation](https://code.claude.com/docs/en/overview)
+- It works linked to a consumer claude.ai chat pro account or with the business console.enthropic.com api-key. The first has a fixed limit, predicatable pricing and lower context.
+- [Claude ai](https://claude.ai/chat/)
+- [Claude api-key](https://platform.claude.com/)
 - **Claude Code tests**: See [claude-cli/README.md](claude-cli/README.md) for more details on the tests performed with Claude Code.
 
 ### pixi — Python & multi-language environment manager
