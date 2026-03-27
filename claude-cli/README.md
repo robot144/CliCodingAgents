@@ -1,6 +1,6 @@
 # Claude Code in Apptainer
 
-This folder contains the Apptainer image and helper scripts to run Claude Code in a sandbox. The current working directory is mounted into the container at `/workspace`, and the container home is set to `/workspace/.apptainer-home` so Claude Code can write config and cache locally.
+This folder contains the Apptainer image and helper scripts to run Claude Code in a sandbox. The current working directory is mounted into the container at `/workspace`, and the container home is set to `/workspace/.apptainer-home` so Claude Code can write config and cache locally. The home directory is backed by a persistent host folder (`$HOME/.claude-apptainer-home`) that you can override with `CLAUDE_APPTAINER_HOME`.
 
 ## Build the SIF image
 
@@ -55,8 +55,9 @@ Pixi environments are stored inside the project folder and persist across sessio
 ## Notes
 
 - Container home: `/workspace/.apptainer-home`
-- If you want a clean Claude Code state, remove the local home folder in your working directory:
+- Host home folder: `$HOME/.claude-apptainer-home` (override with `CLAUDE_APPTAINER_HOME`)
+- If you want a clean Claude Code state, remove the host home folder:
 
 ```bash
-rm -rf .apptainer-home
+rm -rf $HOME/.claude-apptainer-home
 ```

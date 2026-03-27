@@ -6,7 +6,7 @@ From: ubuntu:24.04
     Description Apptainer image with GitHub Copilot CLI installed
 
 %environment
-    export PATH=/usr/local/bin:$PATH
+    export PATH=/root/.pixi/bin:/usr/local/bin:$PATH
 
 %post
     set -e
@@ -20,6 +20,9 @@ From: ubuntu:24.04
     rm -rf /var/lib/apt/lists/*
 
     curl -fsSL https://gh.io/copilot-install | bash
+
+    # Install pixi (Python/multi-language package manager)
+    curl -fsSL https://pixi.sh/install.sh | bash
 
 %runscript
     exec /usr/local/bin/copilot "$@"

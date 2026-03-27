@@ -6,7 +6,7 @@ repo_root="$script_dir"
 
 image="$repo_root/claude-cli.sif"
 bind_path="$PWD"
-home_dir_host="$bind_path/.apptainer-home"
+home_dir_host="${CLAUDE_APPTAINER_HOME:-$HOME/.claude-apptainer-home}"
 home_dir_container="/workspace/.apptainer-home"
 
 if ! command -v apptainer >/dev/null 2>&1; then
@@ -35,4 +35,9 @@ echo "Use 'exit' to leave the container shell."
 echo "Type 'claude' to start Claude Code inside the container."
 echo "You will be prompted to authenticate on first use."
 echo "Python environment manager 'pixi' is available (https://pixi.sh)."
-exec apptainer shell --no-home --home "$home_dir_host" --bind "$bind_path:/workspace" --pwd /workspace "$image"
+exec apptainer shell --no-home \
+  --home "$home_dir_container" \
+  --bind "$bind_path:/workspace" \
+  --bind "$home_dir_host:$home_dir_container" \
+  --pwd /workspace \
+  "$image"

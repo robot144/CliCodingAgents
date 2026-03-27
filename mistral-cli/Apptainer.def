@@ -6,7 +6,7 @@ From: ubuntu:24.04
     Description Apptainer image with Mistral Vibe CLI installed
 
 %environment
-    export PATH=/root/.local/bin:$PATH
+    export PATH=/root/.pixi/bin:/root/.local/bin:$PATH
 
 %post
     set -e
@@ -25,6 +25,9 @@ From: ubuntu:24.04
 
     # Install mistral-vibe CLI via uv
     /root/.local/bin/uv tool install mistral-vibe
+
+    # Install pixi (Python/multi-language package manager)
+    curl -fsSL https://pixi.sh/install.sh | bash
 
 %runscript
     exec /root/.local/bin/vibe "$@"

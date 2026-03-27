@@ -6,7 +6,7 @@ repo_root="$script_dir"
 
 image="$repo_root/copilot-cli.sif"
 bind_path="$PWD"
-home_dir_host="$bind_path/.apptainer-home"
+home_dir_host="${COPILOT_APPTAINER_HOME:-$HOME/.copilot-apptainer-home}"
 home_dir_container="/workspace/.apptainer-home"
 
 if ! command -v apptainer >/dev/null 2>&1; then
@@ -36,4 +36,9 @@ echo "Type 'copilot' to start the Copilot CLI inside the container."
 echo "Copilot commands start with a /, for example: /help"
 echo "Use '/login' to authenticate with GitHub Copilot if needed."
 echo "and /model to switch between available models."
-exec apptainer shell --no-home --home "$home_dir_host" --bind "$bind_path:/workspace" --pwd /workspace "$image"
+exec apptainer shell --no-home \
+  --home "$home_dir_container" \
+  --bind "$bind_path:/workspace" \
+  --bind "$home_dir_host:$home_dir_container" \
+  --pwd /workspace \
+  "$image"

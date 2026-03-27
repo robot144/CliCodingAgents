@@ -6,7 +6,7 @@ repo_root="$script_dir"
 
 image="$repo_root/mistral-cli.sif"
 bind_path="$PWD"
-home_dir_host="$bind_path/.apptainer-home"
+home_dir_host="${MISTRAL_APPTAINER_HOME:-$HOME/.mistral-apptainer-home}"
 home_dir_container="/workspace/.apptainer-home"
 
 if ! command -v apptainer >/dev/null 2>&1; then
@@ -37,7 +37,9 @@ echo "Container home target: $home_dir_container"
 echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
 echo "Type 'vibe' to start the Mistral Vibe CLI inside the container."
-exec apptainer shell --no-home --home "$home_dir_host" \
+exec apptainer shell --no-home \
+  --home "$home_dir_container" \
   --bind "$bind_path:/workspace" \
+  --bind "$home_dir_host:$home_dir_container" \
   --env "MISTRAL_API_KEY=${MISTRAL_API_KEY:-}" \
   --pwd /workspace "$image"
