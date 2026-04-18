@@ -41,9 +41,19 @@ echo "Use 'exit' to leave the container shell."
 echo "Type 'claude' to start Claude Code inside the container."
 echo "You will be prompted to authenticate on first use."
 echo "Python environment manager 'pixi' is available (https://pixi.sh)."
+# X11 forwarding: bind Xauthority into container if available
+x11_args=()
+if [[ -n "${DISPLAY:-}" ]]; then
+  x11_args+=(--env "DISPLAY=$DISPLAY")
+  if [[ -n "${XAUTHORITY:-}" && -f "$XAUTHORITY" ]]; then
+    x11_args+=(--bind "$XAUTHORITY:/root/.Xauthority" --env "XAUTHORITY=/root/.Xauthority")
+  fi
+fi
+
 exec apptainer shell --no-home \
   --home "$home_dir_container" \
   --bind "$bind_path:/workspace" \
   --bind "$home_dir_host:$home_dir_container" \
   --pwd /workspace \
+  "${x11_args[@]}" \
   "$image"

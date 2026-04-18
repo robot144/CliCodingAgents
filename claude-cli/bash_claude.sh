@@ -28,6 +28,15 @@ fi
 
 mkdir -p "$home_dir_host"
 
+# X11 forwarding: bind Xauthority into container if available
+x11_args=()
+if [[ -n "${DISPLAY:-}" ]]; then
+  x11_args+=(--env "DISPLAY=$DISPLAY")
+  if [[ -n "${XAUTHORITY:-}" && -f "$XAUTHORITY" ]]; then
+    x11_args+=(--bind "$XAUTHORITY:/root/.Xauthority" --env "XAUTHORITY=/root/.Xauthority")
+  fi
+fi
+
 echo "Mounting current folder into container: $bind_path to /workspace"
 echo "Using host home: $home_dir_host"
 echo "Container home target: $home_dir_container"
@@ -41,4 +50,5 @@ exec apptainer shell --no-home \
   --bind "$bind_path:/workspace" \
   --bind "$home_dir_host:$home_dir_container" \
   --pwd /workspace \
+  "${x11_args[@]}" \
   "$image"

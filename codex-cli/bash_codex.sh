@@ -35,9 +35,19 @@ echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
 echo "Type 'codex' to start the OpenAI Codex CLI inside the container."
 echo "The first time you run it, authenticate with your ChatGPT account or an API key."
+# X11 forwarding: bind Xauthority into container if available
+x11_args=()
+if [[ -n "${DISPLAY:-}" ]]; then
+  x11_args+=(--env "DISPLAY=$DISPLAY")
+  if [[ -n "${XAUTHORITY:-}" && -f "$XAUTHORITY" ]]; then
+    x11_args+=(--bind "$XAUTHORITY:/root/.Xauthority" --env "XAUTHORITY=/root/.Xauthority")
+  fi
+fi
+
 exec apptainer shell --no-home \
   --home "$home_dir_container" \
   --bind "$bind_path:/workspace" \
   --bind "$home_dir_host:$home_dir_container" \
   --pwd /workspace \
+  "${x11_args[@]}" \
   "$image"

@@ -17,6 +17,9 @@ From: ubuntu:24.04
         ca-certificates \
         curl \
         git \
+        libx11-6 \
+        libxext6 \
+        libxrender1 \
         poppler-utils \
         ripgrep
     rm -rf /var/lib/apt/lists/*

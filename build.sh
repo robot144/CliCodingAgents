@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Create bin directory if it doesn't exist
-mkdir -p /workspace/bin
+mkdir -p ./bin
 
 # Build each container and collect artifacts
-for cli_dir in /workspace/*-cli/; do
+for cli_dir in ./*-cli/; do
     if [ -d "$cli_dir" ]; then
         echo "Building $cli_dir..."
         (cd "$cli_dir" && ./build_*.sh)

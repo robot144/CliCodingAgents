@@ -62,5 +62,24 @@ pixi add python numpy xarray # add packages (from conda-forge and PyPI)
 pixi run python script.py # run a script inside the environment
 ```
 
+## Delft3D-FM
+
+[Delft3D-FM](https://github.com/Deltares/Delft3D) is a hydrodynamic modelling suite developed by Deltares. Two containers pair a coding agent with a Delft3D-FM v2.30.2 installation, so the agent can read model input/output, write run scripts, and post-process results directly.
+
+- **claude-delft3d** — Claude Code + Delft3D-FM. See [claude-delft3d/CLAUDE.md](claude-delft3d/CLAUDE.md) for key paths, run commands, and environment setup.
+- **copilot-delft3d** — GitHub Copilot CLI + Delft3D-FM. See [copilot-delft3d/CLAUDE.md](copilot-delft3d/CLAUDE.md) for details.
+
+> **Note:** The Delft3D-FM binaries are **not included** in this repository. Before building either Delft3D container, obtain a Delft3D-FM installation and copy it into a folder named `delft3d/` at the root of this repository. The `Apptainer.def` files reference `../delft3d/opt` and the build will fail without it.
+
+Both containers mount the current working directory at `/workspace` and include **pixi** for managing Python post-processing environments (e.g. matplotlib, xarray, netCDF4). The Delft3D binaries live at `/opt/dimrset/bin/` inside the container and are invoked via the provided run scripts:
+
+```bash
+# Single-domain flow run
+/opt/dimrset/bin/run_dflowfm.sh -- mymodel.mdu
+
+# Coupled DIMR run
+/opt/dimrset/bin/run_dimr.sh
+```
+
 ## Other links
 - [apptainer documentation](https://apptainer.org/docs/)
