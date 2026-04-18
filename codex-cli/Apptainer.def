@@ -18,7 +18,9 @@ From: ubuntu:24.04
         curl \
         git \
         nodejs \
-        npm
+        npm \
+        poppler-utils \
+        ripgrep
     rm -rf /var/lib/apt/lists/*
 
     npm install -g @openai/codex

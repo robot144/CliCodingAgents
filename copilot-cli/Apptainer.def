@@ -16,7 +16,9 @@ From: ubuntu:24.04
     apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
-        git
+        git \
+        poppler-utils \
+        ripgrep
     rm -rf /var/lib/apt/lists/*
 
     curl -fsSL https://gh.io/copilot-install | bash

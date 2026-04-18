@@ -9,6 +9,10 @@ From: ubuntu:24.04
     #/root/.local/bin for claude
     export PATH=/root/.pixi/bin:/root/.local/bin:/usr/local/bin:$PATH
 
+%files
+    ../delft3d/opt /
+    CLAUDE.md /opt/CLAUDE.md
+
 %post
     set -e
     export DEBIAN_FRONTEND=noninteractive

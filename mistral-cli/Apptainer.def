@@ -17,7 +17,9 @@ From: ubuntu:24.04
         ca-certificates \
         curl \
         git \
-        python3
+        poppler-utils \
+        python3 \
+        ripgrep
     rm -rf /var/lib/apt/lists/*
 
     # Install uv package manager

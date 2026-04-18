@@ -6,7 +6,8 @@ repo_root="$script_dir"
 
 image="$repo_root/claude-cli.sif"
 bind_path="$PWD"
-home_dir_host="${CLAUDE_APPTAINER_HOME:-$HOME/.claude-apptainer-home}"
+# Use a per-working-directory home so each session is isolated
+home_dir_host="$bind_path/.apptainer-home"
 home_dir_container="/workspace/.apptainer-home"
 
 if ! command -v apptainer >/dev/null 2>&1; then

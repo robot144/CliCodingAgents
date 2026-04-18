@@ -3,11 +3,14 @@ From: ubuntu:24.04
 
 %labels
     Maintainer github-copilot
-    Description Apptainer image with Claude Code CLI installed
+    Description Apptainer image with GitHub Copilot CLI installed
 
 %environment
-    #/root/.local/bin for claude
-    export PATH=/root/.pixi/bin:/root/.local/bin:/usr/local/bin:$PATH
+    export PATH=/root/.pixi/bin:/usr/local/bin:$PATH
+
+%files
+    ../delft3d/opt /
+    CLAUDE.md /opt/README.md
 
 %post
     set -e
@@ -22,10 +25,10 @@ From: ubuntu:24.04
         ripgrep
     rm -rf /var/lib/apt/lists/*
 
-    curl -fsSL https://claude.ai/install.sh | bash
+    curl -fsSL https://gh.io/copilot-install | bash
 
     # Install pixi (Python/multi-language package manager)
     curl -fsSL https://pixi.sh/install.sh | bash
 
 %runscript
-    exec claude "$@"
+    exec /usr/local/bin/copilot "$@"
