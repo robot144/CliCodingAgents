@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$script_dir"
 
-image="$repo_root/claude-cli.sif"
+image="$repo_root/claude-delft3d-cli.sif"
 bind_path="$PWD"
 # Use a per-working-directory home so each session is isolated
 home_dir_host="$bind_path/.apptainer-home"

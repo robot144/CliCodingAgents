@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 def_file="$script_dir/Apptainer.def"
-output_image="$script_dir/claude-cli.sif"
+output_image="$script_dir/claude-delft3d-cli.sif"
 
 if ! command -v apptainer >/dev/null 2>&1; then
   echo "apptainer is not installed or not on PATH" >&2

@@ -1,7 +1,7 @@
 *.sif
 bin/
 claude-cli/test/
-claude-delft3d/test/
+claude-delft3d-cli/test/
 copilot-cli/test/
-copilot-delft3d/test/
+copilot-delft3d-cli/test/
 mistral-cli/test/

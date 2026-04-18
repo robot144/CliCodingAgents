@@ -10,8 +10,8 @@ for cli_dir in ./*-cli/; do
         (cd "$cli_dir" && ./build_*.sh)
         
         # Copy .sif and bash_*.sh files to bin
-        cp "$cli_dir"/*.sif /workspace/bin/ 2>/dev/null || true
-        cp "$cli_dir"/bash_*.sh /workspace/bin/ 2>/dev/null || true
+        cp "$cli_dir"/*.sif ./bin/ 2>/dev/null || true
+        cp "$cli_dir"/bash_*.sh ./bin/ 2>/dev/null || true
     fi
 done
 
