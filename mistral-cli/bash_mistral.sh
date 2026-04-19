@@ -38,6 +38,13 @@ echo "Container home target: $home_dir_container"
 echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
 echo "Type 'vibe' to start the Mistral Vibe CLI inside the container."
+# NVIDIA GPU passthrough: add --nv if driver is available
+gpu_args=()
+if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi >/dev/null 2>&1; then
+  echo "NVIDIA GPU detected — enabling GPU passthrough (--nv)."
+  gpu_args+=(--nv)
+fi
+
 # X11 forwarding: bind Xauthority into container if available
 x11_args=()
 if [[ -n "${DISPLAY:-}" ]]; then
@@ -53,5 +60,6 @@ exec apptainer shell --no-home \
   --bind "$home_dir_host:$home_dir_container" \
   --env "MISTRAL_API_KEY=${MISTRAL_API_KEY:-}" \
   --pwd /workspace \
+  "${gpu_args[@]}" \
   "${x11_args[@]}" \
   "$image"

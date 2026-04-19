@@ -35,6 +35,13 @@ echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
 echo "Type 'codex' to start the OpenAI Codex CLI inside the container."
 echo "The first time you run it, authenticate with your ChatGPT account or an API key."
+# NVIDIA GPU passthrough: add --nv if driver is available
+gpu_args=()
+if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi >/dev/null 2>&1; then
+  echo "NVIDIA GPU detected — enabling GPU passthrough (--nv)."
+  gpu_args+=(--nv)
+fi
+
 # X11 forwarding: bind Xauthority into container if available
 x11_args=()
 if [[ -n "${DISPLAY:-}" ]]; then
@@ -49,5 +56,6 @@ exec apptainer shell --no-home \
   --bind "$bind_path:/workspace" \
   --bind "$home_dir_host:$home_dir_container" \
   --pwd /workspace \
+  "${gpu_args[@]}" \
   "${x11_args[@]}" \
   "$image"

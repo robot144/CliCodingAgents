@@ -14,18 +14,32 @@ Being a cautious creature, we here create a safe and controlled environment for 
 Another concern voiced is that all LLMs that you call with an api, will have access to the data that you share with them, and that they may use this data for training or other purposes. This is a valid concern, and it is important to be aware of the privacy implications of using these agents. It is always a good idea to review the privacy policies of the agents and the LLMs that they use, and to be cautious about sharing sensitive data with them. If you are concerned about privacy, you may want to consider using agents that allow you to run your own instance of the LLM, or that have strict privacy policies in place.
 
 ## Pre-requisites
-- apptainer installed on the system
+- apptainer installed on the system. Many linux clusters have apptainer installed, but if you are running on a local machine, you may need to install it yourself. You can find instructions for installing apptainer on the [apptainer documentation](https://apptainer.org/docs/) page.
 - access to the agents (e.g., copilot cli, claude code, chatgpt codex-cli, aider) This may require signing up for an account and obtaining an API key, depending on the agent.
 
 ## Status
-- Copilot CLI: tested and working in the apptainer container.
-- ChatGPT Codex CLI: tested and working in the apptainer container.
-- Mistral Vibe CLI: tested and working in the apptainer container.
-- Claude Code: tested and working in the apptainer container.
-- **pixi** added to the Claude Code container for Python and multi-language environment management.
-  - We aim to add pixi to the other containers as well, but for now it is only available in the Claude Code container. The first tests look promising, and it seems to work well in the container. It is a great tool for managing Python environments, and it can be used to create isolated environments for testing different versions of packages or for testing code that has different dependencies.
 
-## Agents
+### Generic agents: usefull for a wide range of coding tasks, such as code generation, code review, and debugging. They can be used in a variety of programming languages and frameworks, and they can be integrated into existing workflows.
+| Agent | Available | Tested |
+|---|:---:|:---:|
+| Copilot CLI | ✓ | ✓ |
+| ChatGPT Codex CLI | ✓ | ✓ |
+| Mistral Vibe CLI | ✓ | ✓ |
+| Claude Code | ✓ | ✓ |
+| Gemini Code | ✗ | ✗ |
+
+### Delft3D-FM agents: specifically designed for working with the Delft3D-FM hydrodynamic modelling suite. They can read model input/output, write run scripts, and post-process results directly, making them well-suited for users of Delft3D-FM.
+| Agent | Available | Tested |
+|---|:---:|:---:|
+| Claude Code + Delft3D-FM | ✓ | ✓ |
+| GitHub Copilot CLI + Delft3D-FM | ✓ | ✓ |
+
+# Content of the containers
+- **pixi** see below for more details.
+- There are tools like popplar available in the containers to support the agents in working with pdf files.
+- Many tools keep files in folders like $HOME/.pixi. Environments are stored inside the project folder and persist across container sessions via `.apptainer-home`. This folder is mapped to the host home directory, so you can share environments between container sessions. If you want to start with a clean slate, simply delete the `.apptainer-home` folder and its contents.
+
+## Available Agents
 
 ## Copilot cli
 - **Description**: Copilot CLI is a command-line interface that allows developers to interact with GitHub Copilot, an AI-powered code completion tool. It provides a way to use Copilot's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
@@ -80,6 +94,41 @@ Both containers mount the current working directory at `/workspace` and include 
 # Coupled DIMR run
 /opt/dimrset/bin/run_dimr.sh
 ```
+
+## Running the containers
+
+Each agent has a dedicated launch script in its folder (e.g. `claude-cli/bash_claude.sh`). The script mounts your current working directory into the container at `/workspace`, sets up an isolated home directory, and drops you into a shell where you can invoke the agent.
+
+```bash
+cd /path/to/your/project
+/path/to/repo/claude-cli/bash_claude.sh
+# then inside the container:
+claude
+```
+
+All launch scripts share the same behaviour for host-feature passthrough:
+
+### X11 / graphical display passthrough
+
+If the environment variable `DISPLAY` is set on the host (i.e. you are running inside a graphical session or have X11 forwarding active over SSH), the script automatically passes it into the container together with the Xauthority cookie. This lets code running inside the container open windows on your desktop — for example matplotlib figures or GUI tools.
+
+To enable X11 forwarding over SSH, connect with:
+
+```bash
+ssh -X user@host
+```
+
+No changes to the container image are needed; the display is forwarded automatically whenever `DISPLAY` is set.
+
+### NVIDIA GPU passthrough
+
+Each launch script detects whether an NVIDIA GPU is available on the host by calling `nvidia-smi`. If the driver is present and responsive, the Apptainer `--nv` flag is added automatically and a message is printed:
+
+```
+NVIDIA GPU detected — enabling GPU passthrough (--nv).
+```
+
+`--nv` binds the host NVIDIA driver libraries into the container, making the GPU accessible to code running inside. Importantly, only the **driver** needs to be installed on the host — CUDA toolkit libraries (e.g. from a `pixi` or `conda` environment) can live entirely inside the container. On machines without an NVIDIA GPU the flag is silently omitted and the container starts normally.
 
 ## Other links
 - [apptainer documentation](https://apptainer.org/docs/)

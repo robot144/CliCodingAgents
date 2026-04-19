@@ -41,6 +41,13 @@ echo "Use 'exit' to leave the container shell."
 echo "Type 'claude' to start Claude Code inside the container."
 echo "You will be prompted to authenticate on first use."
 echo "Python environment manager 'pixi' is available (https://pixi.sh)."
+# NVIDIA GPU passthrough: add --nv if driver is available
+gpu_args=()
+if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi >/dev/null 2>&1; then
+  echo "NVIDIA GPU detected — enabling GPU passthrough (--nv)."
+  gpu_args+=(--nv)
+fi
+
 # X11 forwarding: bind Xauthority into container if available
 x11_args=()
 if [[ -n "${DISPLAY:-}" ]]; then
@@ -55,5 +62,6 @@ exec apptainer shell --no-home \
   --bind "$bind_path:/workspace" \
   --bind "$home_dir_host:$home_dir_container" \
   --pwd /workspace \
+  "${gpu_args[@]}" \
   "${x11_args[@]}" \
   "$image"
