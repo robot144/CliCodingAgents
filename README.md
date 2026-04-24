@@ -26,13 +26,14 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 | ChatGPT Codex CLI | ✓ | ✓ |
 | Mistral Vibe CLI | ✓ | ✓ |
 | Claude Code | ✓ | ✓ |
-| Gemini Code | ✗ | ✗ |
+| Gemini CLI | ✗ | ✗ |
 
 ### Delft3D-FM agents: specifically designed for working with the Delft3D-FM hydrodynamic modelling suite. They can read model input/output, write run scripts, and post-process results directly, making them well-suited for users of Delft3D-FM.
 | Agent | Available | Tested |
 |---|:---:|:---:|
 | Claude Code + Delft3D-FM | ✓ | ✓ |
 | GitHub Copilot CLI + Delft3D-FM | ✓ | ✓ |
+| Mistral Vibe CLI + Delft3D-FM | ✓ | ✓ |
 
 # Content of the containers
 - **pixi** see below for more details.
@@ -66,6 +67,12 @@ Another concern voiced is that all LLMs that you call with an api, will have acc
 - [Claude api-key](https://platform.claude.com/)
 - **Claude Code tests**: See [claude-cli/README.md](claude-cli/README.md) for more details on the tests performed with Claude Code.
 
+## Gemini CLI
+- **Description**: Gemini CLI is Google's terminal-based coding assistant for querying and editing large codebases, generating apps from images or PDFs, and automating development workflows from the command line.
+- [Gemini CLI documentation](https://geminicli.com/)
+- Install with `npm install -g @google/gemini-cli`
+- Status in this repository: not yet containerized or tested.
+
 ### pixi — Python & multi-language environment manager
 
 The Claude Code container includes [pixi](https://pixi.sh), a fast, Rust-based package manager built on conda-forge. It allows you to create reproducible environments with Python, R, and compiled libraries (NumPy, GDAL, NetCDF4, CUDA, etc.) without needing system-level installs. Unlike pip/venv, pixi resolves both Python packages and native dependencies together, making it well suited for scientific and data-heavy projects. Environments are stored inside the project folder and persist across container sessions via `.apptainer-home`. 
@@ -82,6 +89,7 @@ pixi run python script.py # run a script inside the environment
 
 - **claude-delft3d** — Claude Code + Delft3D-FM. See [claude-delft3d/CLAUDE.md](claude-delft3d/CLAUDE.md) for key paths, run commands, and environment setup.
 - **copilot-delft3d** — GitHub Copilot CLI + Delft3D-FM. See [copilot-delft3d/CLAUDE.md](copilot-delft3d/CLAUDE.md) for details.
+- **mistral-delft3d** — Mistral Vibe CLI + Delft3D-FM. See [mistral-delft3d-cli/README.md](mistral-delft3d-cli/README.md) for key paths, run commands, and environment setup.
 
 > **Note:** The Delft3D-FM binaries are **not included** in this repository. Before building either Delft3D container, obtain a Delft3D-FM installation and copy it into a folder named `delft3d/` at the root of this repository. The `Apptainer.def` files reference `../delft3d/opt` and the build will fail without it.
 

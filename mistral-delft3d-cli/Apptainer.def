@@ -1,0 +1,42 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Maintainer mistral-vibe
+    Description Apptainer image with Mistral Vibe CLI and Delft3D-FM installed
+
+%environment
+    export PATH=/root/.pixi/bin:/root/.local/bin:$PATH
+
+%files
+    ../delft3d/opt /
+    README.md /opt/README.md
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        libx11-6 \
+        libxext6 \
+        libxrender1 \
+        poppler-utils \
+        python3 \
+        ripgrep
+    rm -rf /var/lib/apt/lists/*
+
+    # Install uv package manager
+    curl -LsSf https://astral.sh/uv/install.sh | bash
+
+    # Install mistral-vibe CLI via uv
+    /root/.local/bin/uv tool install mistral-vibe
+
+    # Install pixi (Python/multi-language package manager)
+    curl -fsSL https://pixi.sh/install.sh | bash
+
+%runscript
+    exec /root/.local/bin/vibe "$@"

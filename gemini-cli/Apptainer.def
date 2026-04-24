@@ -1,0 +1,38 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%labels
+    Maintainer google-gemini
+    Description Apptainer image with Gemini CLI installed
+
+%environment
+    export PATH=/root/.pixi/bin:/usr/local/bin:$PATH
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+        libx11-6 \
+        libxext6 \
+        libxrender1 \
+        poppler-utils \
+        ripgrep
+
+    # Gemini CLI requires Node.js 20+.
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get install -y --no-install-recommends nodejs
+    rm -rf /var/lib/apt/lists/*
+
+    npm install -g @google/gemini-cli
+
+    # Install pixi (Python/multi-language package manager)
+    curl -fsSL https://pixi.sh/install.sh | bash
+
+%runscript
+    exec /usr/local/bin/gemini "$@"
