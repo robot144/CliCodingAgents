@@ -5,3 +5,6 @@ claude-delft3d-cli/test/
 copilot-cli/test/
 copilot-delft3d-cli/test/
 mistral-cli/test/
+# pixi environments
+.pixi/*
+!.pixi/config.toml
