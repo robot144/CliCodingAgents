@@ -23,7 +23,8 @@ From: ubuntu:24.04
         nodejs \
         npm \
         poppler-utils \
-        ripgrep
+        ripgrep \
+	bubblewrap # limit codex access - without it packaged version is used
     rm -rf /var/lib/apt/lists/*
 
     npm install -g @openai/codex
