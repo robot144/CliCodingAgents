@@ -11,11 +11,11 @@ We try to keep a few of the main agents up to date and tested. The table below s
 
 | Agent | Available | Last tested |
 |---|:---:|:---:|
-| Copilot CLI | ✓ | DD-MM-YYYY |
-| ChatGPT Codex CLI | ✓ | DD-MM-YYYY |
-| Mistral Vibe CLI | ✓ | DD-MM-YYYY |
-| Claude Code | ✓ | DD-MM-YYYY |
-| Gemini CLI | ✗ | DD-MM-YYYY |
+| Copilot CLI | ✓ | 03-AUG-2026 |
+| ChatGPT Codex CLI | ✓ | DD-MMM-YYYY |
+| Mistral Vibe CLI | ✓ | DD-MMM-YYYY |
+| Claude Code | ✓ | DD-MMM-YYYY |
+| Gemini CLI | ✗ | DD-MMM-YYYY |
 
 ### Delft3D-FM agents
 
@@ -67,7 +67,7 @@ Until recently, we also had Delft3D-FM-specific containers, but now we're moving
 
 ### Building the containers
 
-To build the containers for the agents, navigate to the respective agent's folder and run the build script. For example:
+There are ready-to-use container images for the agents available on GitHub Container Registry. You can pull these images directly with apptainer without needing to build them locally. This is done automatically by the launch scripts if the local image file is missing. However, if you want to build the containers locally, you can do so by following the instructions below.
 
 ```bash
 cd /path/to/repo/claude-cli
