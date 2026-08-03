@@ -8,10 +8,13 @@ From: ubuntu:24.04
 %environment
     export PATH=/root/.pixi/bin:/usr/local/bin:$PATH
 
+%files
+    ../opt/bootstrap-workspace.sh /opt/bootstrap-workspace.sh
+
 %post
     set -e
     export DEBIAN_FRONTEND=noninteractive
-
+    # poppler for reading pdf
     apt-get update
     apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -22,6 +25,20 @@ From: ubuntu:24.04
         libxrender1 \
         poppler-utils \
         ripgrep
+    # gh from github repo to get more recent version
+    apt-get install -y wget gpg
+
+    mkdir -p -m 755 /etc/apt/keyrings
+    wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    cp /tmp/githubcli.gpg /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+
+    mkdir -p -m 755 /etc/apt/sources.list.d
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    > /etc/apt/sources.list.d/github-cli.list
+    apt-get update
+    apt-get install -y gh
+
     rm -rf /var/lib/apt/lists/*
 
     curl -fsSL https://gh.io/copilot-install | bash
