@@ -37,9 +37,9 @@ Shared infrastructure already in place across all containers:
     - [ ] mistral
     - [ ] codex
     - [ ] gemini
-- [ ] **make installation easier**
-  - [ ] **generate container images and push them to ghcr.io**
-  - [ ] **automatically pull image if missing**
+- [x] **make installation easier**
+  - [x] **generate container images and push them to ghcr.io**
+  - [x] **automatically pull image if missing**
 - [ ] **Move domain knowledge into installable skills**
   - [x] **Add `gh` for skill management**
   - [x] **Create a dummy skill and document it**

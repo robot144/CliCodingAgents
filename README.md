@@ -74,9 +74,13 @@ cd /path/to/repo/claude-cli
 ./build_claude.sh
 ```
 
+For details on local `.sif` images and publishing them to GitHub Container Registry, see [CONTAINER_IMAGES.md](CONTAINER_IMAGES.md).
+
 ### Running the containers
 
 Each agent has a dedicated launch script in its folder (e.g. `claude-cli/bash_claude.sh`). The script mounts your current working directory into the container, sets up an isolated home directory, and drops you into a shell where you can invoke the agent.
+
+Some launchers can also pull a published `.sif` image automatically if the local image file is missing, so building the container locally is not always required before first use.
 
 ```bash
 cd /path/to/your/project

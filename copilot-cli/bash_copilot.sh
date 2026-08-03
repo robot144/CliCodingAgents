@@ -5,6 +5,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$script_dir"
 
 image="$repo_root/copilot-cli.sif"
+image_ref="${COPILOT_IMAGE_REF:-oras://ghcr.io/robot144/copilot-cli:latest}"
 bind_path="$(pwd -P)"
 # Use a per-working-directory home so each session is isolated
 home_dir_host="$bind_path/.apptainer-home"
@@ -153,9 +154,9 @@ if [[ ! -d "$bind_path" ]]; then
 fi
 
 if [[ ! -f "$image" ]]; then
-  echo "Image not found: $image" >&2
-  echo "Build it first with: ./build_copilot.sh" >&2
-  exit 1
+  echo "Image not found locally: $image"
+  echo "Pulling image from: $image_ref"
+  apptainer pull "$image" "$image_ref"
 fi
 
 mkdir -p "$home_dir_host"
