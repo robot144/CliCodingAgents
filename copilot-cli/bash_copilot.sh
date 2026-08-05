@@ -12,6 +12,12 @@ home_dir_host="$bind_path/.apptainer-home"
 home_dir_container="$home_dir_host"
 bootstrap_sentinel_host="$home_dir_host/bootstrap-finished"
 additional_bind_args=()
+default_bind_file="$bind_path/binds.txt"
+default_bind_file_ro="$bind_path/binds-ro.txt"
+rw_bind_specs=()
+ro_bind_specs=()
+declare -A seen_rw_bind_specs=()
+declare -A seen_ro_bind_specs=()
 
 usage() {
   cat <<'EOF'
@@ -24,8 +30,10 @@ Bind options:
   --bind-file    Read additional read-write bind specs from a file.
   --bind-file-ro Read additional read-only bind specs from a file.
 
-When only one absolute host path is given, it is mounted at the same path inside
+When only one host path is given, it is mounted at the same resolved path inside
 the container.
+If present, binds.txt and binds-ro.txt in the current working directory are
+loaded automatically.
 EOF
 }
 
@@ -72,7 +80,45 @@ add_bind_arg() {
   local normalized_spec
 
   normalized_spec="$(normalize_bind_spec "$raw_spec" "$base_dir")"
-  additional_bind_args+=("$option_name" "$normalized_spec")
+  case "$option_name" in
+    --bind)
+      if [[ -n "${seen_rw_bind_specs[$normalized_spec]:-}" ]]; then
+        return
+      fi
+      seen_rw_bind_specs["$normalized_spec"]=1
+      additional_bind_args+=("--bind" "$normalized_spec")
+      rw_bind_specs+=("$normalized_spec")
+      ;;
+    --bind-ro)
+      if [[ -n "${seen_ro_bind_specs[$normalized_spec]:-}" ]]; then
+        return
+      fi
+      seen_ro_bind_specs["$normalized_spec"]=1
+      additional_bind_args+=("--bind" "${normalized_spec}:ro")
+      ro_bind_specs+=("$normalized_spec")
+      ;;
+    *)
+      echo "Unsupported bind option: $option_name" >&2
+      exit 1
+      ;;
+  esac
+}
+
+persist_bind_specs() {
+  local bind_file="$1"
+  shift
+  local spec
+
+  if [[ $# -eq 0 ]]; then
+    return
+  fi
+
+  touch "$bind_file"
+  for spec in "$@"; do
+    if ! grep -Fqx "$spec" "$bind_file"; then
+      printf '%s\n' "$spec" >> "$bind_file"
+    fi
+  done
 }
 
 load_bind_file() {
@@ -109,6 +155,14 @@ load_bind_file() {
     fi
   done < "$bind_file"
 }
+
+if [[ -f "$default_bind_file" ]]; then
+  load_bind_file "--bind" "$default_bind_file"
+fi
+
+if [[ -f "$default_bind_file_ro" ]]; then
+  load_bind_file "--bind-ro" "$default_bind_file_ro"
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -152,6 +206,9 @@ if [[ ! -d "$bind_path" ]]; then
   echo "Bind path is not a directory: $bind_path" >&2
   exit 1
 fi
+
+persist_bind_specs "$default_bind_file" "${rw_bind_specs[@]}"
+persist_bind_specs "$default_bind_file_ro" "${ro_bind_specs[@]}"
 
 if [[ ! -f "$image" ]]; then
   echo "Image not found locally: $image"
