@@ -4,10 +4,9 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$script_dir"
 
-image="$repo_root/codex-cli.sif"
-image_ref="${CODEX_IMAGE_REF:-oras://ghcr.io/robot144/codex-cli:latest}"
+image="$repo_root/antigravity-cli.sif"
+image_ref="${ANTIGRAVITY_IMAGE_REF:-oras://ghcr.io/robot144/antigravity-cli:latest}"
 bind_path="$(pwd -P)"
-# Use a per-working-directory home so each session is isolated
 home_dir_host="$bind_path/.apptainer-home"
 home_dir_container="$home_dir_host"
 bootstrap_sentinel_host="$home_dir_host/bootstrap-finished"
@@ -21,8 +20,8 @@ declare -A seen_ro_bind_specs=()
 
 usage() {
   cat <<'EOF'
-Usage: bash_codex.sh [--bind PATH|HOST:CONTAINER] [--bind-ro PATH|HOST:CONTAINER] \
-                     [--bind-file FILE] [--bind-file-ro FILE]
+Usage: bash_antigravity.sh [--bind PATH|HOST:CONTAINER] [--bind-ro PATH|HOST:CONTAINER] \
+                           [--bind-file FILE] [--bind-file-ro FILE]
 
 Bind options:
   --bind         Add a read-write bind mount.
@@ -207,7 +206,6 @@ if [[ ! -d "$bind_path" ]]; then
   exit 1
 fi
 
-mkdir -p "$home_dir_host"
 persist_bind_specs "$default_bind_file" "${rw_bind_specs[@]}"
 persist_bind_specs "$default_bind_file_ro" "${ro_bind_specs[@]}"
 
@@ -217,21 +215,24 @@ if [[ ! -f "$image" ]]; then
   apptainer pull "$image" "$image_ref"
 fi
 
+mkdir -p "$home_dir_host"
+
 echo "Mounting current folder into container at the same path: $bind_path"
 echo "Using host home: $home_dir_host"
 echo "Container home target: $home_dir_container"
 echo "Starting shell in container: $image"
 echo "Use 'exit' to leave the container shell."
-echo "Type 'codex' to start the OpenAI Codex CLI inside the container."
-echo "The first time you run it, authenticate with your ChatGPT account or an API key."
-# NVIDIA GPU passthrough: add --nv if driver is available
+echo "Type 'agy' to start Antigravity CLI inside the container."
+echo "Antigravity will prompt for workspace trust on first launch."
+echo "Authentication uses the local keyring when available and otherwise falls back to browser or SSH-style login."
+echo "Python environment manager 'pixi' is available (https://pixi.sh)."
+
 gpu_args=()
 if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi >/dev/null 2>&1; then
   echo "NVIDIA GPU detected — enabling GPU passthrough (--nv)."
   gpu_args+=(--nv)
 fi
 
-# X11 forwarding: bind Xauthority into container if available
 x11_args=()
 if [[ -n "${DISPLAY:-}" ]]; then
   x11_args+=(--env "DISPLAY=$DISPLAY")
@@ -246,12 +247,14 @@ if [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
   if [[ "$DBUS_SESSION_BUS_ADDRESS" == unix:path=* ]]; then
     dbus_socket_path="${DBUS_SESSION_BUS_ADDRESS#unix:path=}"
     if [[ -S "$dbus_socket_path" ]]; then
+      # Antigravity-specific auth helper: expose the host session bus for keyring and URL-open flows.
       dbus_args+=(--bind "$dbus_socket_path:$dbus_socket_path")
     fi
   fi
 fi
 
 if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "${XDG_RUNTIME_DIR}" ]]; then
+  # Antigravity-specific auth helper: some desktop/browser openers expect XDG_RUNTIME_DIR.
   dbus_args+=(--env "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" --bind "$XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR")
 fi
 

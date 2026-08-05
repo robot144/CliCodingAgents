@@ -83,6 +83,34 @@ cd copilot-cli
 ./push_copilot_image.sh
 ```
 
+There is a matching `claude-cli` wrapper with Claude-specific defaults:
+
+```bash
+cd claude-cli
+./push_claude_image.sh
+```
+
+There is a matching `codex-cli` wrapper with Codex-specific defaults:
+
+```bash
+cd codex-cli
+./push_codex_image.sh
+```
+
+There is a matching `mistral-cli` wrapper with Mistral-specific defaults:
+
+```bash
+cd mistral-cli
+./push_mistral_image.sh
+```
+
+There is a matching `antigravity-cli` wrapper with Antigravity-specific defaults:
+
+```bash
+cd antigravity-cli
+./push_antigravity_image.sh
+```
+
 By default it expects:
 
 - image: `copilot-cli/copilot-cli.sif`
@@ -111,6 +139,8 @@ Yes, you can publish multiple container images under the same GitHub account or 
 ghcr.io/robot144/copilot-cli:latest
 ghcr.io/robot144/codex-cli:latest
 ghcr.io/robot144/claude-cli:latest
+ghcr.io/robot144/mistral-cli:latest
+ghcr.io/robot144/antigravity-cli:latest
 ```
 
 Container image names in GHCR do not have to map one-to-one to Git repositories. Package association with a repository is handled separately by GitHub.

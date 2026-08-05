@@ -243,6 +243,21 @@ if [[ -n "${DISPLAY:-}" ]]; then
   fi
 fi
 
+dbus_args=()
+if [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
+  dbus_args+=(--env "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS")
+  if [[ "$DBUS_SESSION_BUS_ADDRESS" == unix:path=* ]]; then
+    dbus_socket_path="${DBUS_SESSION_BUS_ADDRESS#unix:path=}"
+    if [[ -S "$dbus_socket_path" ]]; then
+      dbus_args+=(--bind "$dbus_socket_path:$dbus_socket_path")
+    fi
+  fi
+fi
+
+if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "${XDG_RUNTIME_DIR}" ]]; then
+  dbus_args+=(--env "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR" --bind "$XDG_RUNTIME_DIR:$XDG_RUNTIME_DIR")
+fi
+
 exec apptainer exec --no-home \
   --home "$home_dir_container" \
   --bind "$bind_path:$bind_path" \
@@ -251,5 +266,6 @@ exec apptainer exec --no-home \
   --pwd "$bind_path" \
   "${gpu_args[@]}" \
   "${x11_args[@]}" \
+  "${dbus_args[@]}" \
   "$image" \
   /bin/bash -lc "if [[ ! -f \"$bootstrap_sentinel_host\" ]]; then /opt/bootstrap-workspace.sh; fi; exec /bin/bash -i"

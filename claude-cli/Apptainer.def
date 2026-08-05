@@ -6,8 +6,12 @@ From: ubuntu:24.04
     Description Apptainer image with Claude Code CLI installed
 
 %environment
-    #/root/.local/bin for claude
+    # Claude-specific: Claude Code installs its launcher into /root/.local/bin.
     export PATH=/root/.pixi/bin:/root/.local/bin:/usr/local/bin:$PATH
+
+%files
+    ../opt/bootstrap-workspace.sh /opt/bootstrap-workspace.sh
+    ../opt/AGENTS.md /opt/AGENTS.md
 
 %post
     set -e
@@ -17,18 +21,35 @@ From: ubuntu:24.04
     apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
+        epiphany-browser \
         git \
         libx11-6 \
         libxext6 \
         libxrender1 \
         poppler-utils \
         ripgrep
+    # gh from github repo to get more recent version
+    apt-get install -y wget gpg
+
+    mkdir -p -m 755 /etc/apt/keyrings
+    wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    cp /tmp/githubcli.gpg /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+
+    mkdir -p -m 755 /etc/apt/sources.list.d
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    > /etc/apt/sources.list.d/github-cli.list
+    apt-get update
+    apt-get install -y gh
+
     rm -rf /var/lib/apt/lists/*
 
+    # Claude-specific installer.
     curl -fsSL https://claude.ai/install.sh | bash
 
     # Install pixi (Python/multi-language package manager)
     curl -fsSL https://pixi.sh/install.sh | bash
 
 %runscript
+    # Claude-specific command entrypoint.
     exec claude "$@"

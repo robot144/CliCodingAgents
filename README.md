@@ -11,11 +11,11 @@ We try to keep a few of the main agents up to date and tested. The table below s
 
 | Agent | Available | Last tested |
 |---|:---:|:---:|
-| Copilot CLI | ✓ | 03-AUG-2026 |
-| ChatGPT Codex CLI | ✓ | DD-MMM-YYYY |
-| Mistral Vibe CLI | ✓ | DD-MMM-YYYY |
-| Claude Code | ✓ | DD-MMM-YYYY |
-| Gemini CLI | ✗ | DD-MMM-YYYY |
+| Copilot CLI | ✓ | 05-AUG-2026 |
+| ChatGPT Codex CLI | ✓ | 04-AUG-2026 |
+| Mistral Vibe CLI | ✓ | 05-AUG-2026 |
+| Claude Code | ✓ | 04-AUG-2026 |
+| Antigravity CLI | ✓ | 05-AUG-2026 |
 
 ### Delft3D-FM agents
 
@@ -32,18 +32,15 @@ Until recently, we also had Delft3D-FM-specific containers, but now we're moving
 - **Description**: Copilot CLI is a command-line interface that allows developers to interact with GitHub Copilot, an AI-powered code completion tool. It provides a way to use Copilot's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [into copilot-cli](https://developer.microsoft.com/blog/get-started-with-github-copilot-cli-a-free-hands-on-course)
 - [copilot-cli on github](https://github.com/github/copilot-cli)
-- **copilot-cli tests**: See [copilot-cli/README.md](copilot-cli/README.md) for more details on the tests performed with copilot-cli.
 
 ### ChatGPT codex-cli
 - **Description**: ChatGPT Codex CLI is a command-line interface that allows developers to interact with OpenAI's Codex, an AI model designed for code generation and understanding. It provides a way to use Codex's capabilities directly from the terminal, enabling developers to generate code snippets, get suggestions, and perform various coding tasks without leaving the command line.
 - [ChatGPT Codex CLI documentation](https://developers.openai.com/codex/cli/)
-- **ChatGPT Codex CLI tests**: See [chatgpt-codex-cli/README.md](chatgpt-codex-cli/README.md) for more details on the tests performed with ChatGPT Codex CLI.
 
 ### Mistral Vibe CLI
 - **Description**: Mistral Vibe CLI is an AI-powered code generation tool developed by Mistral. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Mistral Vibe CLI aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
 - [Mistral Vibe CLI documentation](https://mistral.ai/news/devstral-2-vibe-cli)
 - [Codestral CLI console page](https://console.mistral.ai/codestral/cli)
-- **Mistral Vibe CLI tests**: See [mistral-cli/README.md](mistral-cli/README.md) for more details on running the Mistral Vibe CLI in an Apptainer container.
 
 ### Claude code
 - **Description**: Claude Code is an AI-powered code generation tool developed by Anthropic. It uses advanced language models to assist developers in writing code by generating code snippets, providing suggestions, and helping with various coding tasks. Claude Code aims to enhance developer productivity and streamline the coding process by leveraging the capabilities of large language models.
@@ -51,13 +48,13 @@ Until recently, we also had Delft3D-FM-specific containers, but now we're moving
 - It works linked to a consumer claude.ai chat pro account or with the business console.enthropic.com api-key. The first has a fixed limit, predicatable pricing and lower context.
 - [Claude ai](https://claude.ai/chat/)
 - [Claude api-key](https://platform.claude.com/)
-- **Claude Code tests**: See [claude-cli/README.md](claude-cli/README.md) for more details on the tests performed with Claude Code.
 
-### Gemini CLI
-- **Description**: Gemini CLI is Google's terminal-based coding assistant for querying and editing large codebases, generating apps from images or PDFs, and automating development workflows from the command line.
-- [Gemini CLI documentation](https://geminicli.com/)
-- Install with `npm install -g @google/gemini-cli`
-- Status in this repository: not yet containerized or tested.
+### Antigravity CLI
+- **Description**: Antigravity CLI is Google's current terminal-first interface for interacting with Antigravity agents. 
+- [Antigravity CLI getting started](https://antigravity.google/docs/cli/getting-started)
+- Install with `curl -fsSL https://antigravity.google/cli/install.sh | bash`
+- The launcher binary is `agy`.
+- Antigravity replaces Gemini CLI here for personal-account usage. Google still documents Gemini CLI as an enterprise/API-key path.
 
 ## Installation
 
@@ -70,23 +67,23 @@ Until recently, we also had Delft3D-FM-specific containers, but now we're moving
 There are ready-to-use container images for the agents available on GitHub Container Registry. You can pull these images directly with apptainer without needing to build them locally. This is done automatically by the launch scripts if the local image file is missing. However, if you want to build the containers locally, you can do so by following the instructions below.
 
 ```bash
-cd /path/to/repo/claude-cli
-./build_claude.sh
+cd /path/to/repo/antigravity-cli
+./build_antigravity.sh
 ```
 
 For details on local `.sif` images and publishing them to GitHub Container Registry, see [CONTAINER_IMAGES.md](CONTAINER_IMAGES.md).
 
 ### Running the containers
 
-Each agent has a dedicated launch script in its folder (e.g. `claude-cli/bash_claude.sh`). The script mounts your current working directory into the container, sets up an isolated home directory, and drops you into a shell where you can invoke the agent.
+Each agent has a dedicated launch script in its folder (e.g. `claude-cli/bash_claude.sh` or `antigravity-cli/bash_antigravity.sh`). The script mounts your current working directory into the container, sets up an isolated home directory, and drops you into a shell where you can invoke the agent.
 
 Some launchers can also pull a published `.sif` image automatically if the local image file is missing, so building the container locally is not always required before first use.
 
 ```bash
 cd /path/to/your/project
-/path/to/repo/claude-cli/bash_claude.sh
+/path/to/repo/antigravity-cli/bash_antigravity.sh
 # then inside the container:
-claude
+agy
 ```
 
 ### Mounted folders
@@ -113,6 +110,8 @@ Examples:
 /path/to/repo/copilot-cli/bash_copilot.sh --bind /host/data:/container/data
 /path/to/repo/copilot-cli/bash_copilot.sh --bind-file mounts.txt --bind-file-ro mounts-ro.txt
 ```
+
+The current path-preserving bind and bind-persistence behavior is implemented in the Copilot, Claude, Codex, Mistral, and Antigravity launchers.
 
 ### Container initialization
 

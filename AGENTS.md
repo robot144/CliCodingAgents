@@ -1,10 +1,10 @@
 # AGENTS.md
 
-This file gives coding agents (Claude Code, Codex CLI, Copilot CLI, Mistral Vibe CLI, Gemini CLI, or any other AI assistant working in a checkout of this repo) the context needed to work productively here.
+This file gives coding agents (Claude Code, Codex CLI, Copilot CLI, Mistral Vibe CLI, Antigravity CLI, or any other AI assistant working in a checkout of this repo) the context needed to work productively here.
 
 ## What this repository is
 
-`CliCodingAgents` is a collection of Apptainer-containerized CLI coding agents, built to let people safely try out and compare LLM-based coding tools (Copilot CLI, ChatGPT Codex CLI, Mistral Vibe CLI, Claude Code, Gemini CLI). Each agent is packaged as its own container so it can be tested in an isolated sandbox rather than run directly on the host. See [README.md](README.md) for the full background, status table, and usage docs.
+`CliCodingAgents` is a collection of Apptainer-containerized CLI coding agents, built to let people safely try out and compare LLM-based coding tools (Copilot CLI, ChatGPT Codex CLI, Mistral Vibe CLI, Claude Code, Antigravity CLI). Each agent is packaged as its own container so it can be tested in an isolated sandbox rather than run directly on the host. See [README.md](README.md) for the full background, status table, and usage docs.
 
 There are two flavors of container per agent:
 - **Generic** (`<agent>-cli/`) — the agent alone, for general coding tasks.
@@ -13,7 +13,7 @@ There are two flavors of container per agent:
 ## Repository layout
 
 ```
-<agent>-cli/            Apptainer.def, build_<agent>.sh, bash_<agent>.sh, README.md
+<agent>-cli/            Apptainer.def, build_<agent>.sh, bash_<agent>.sh, optional helper docs
 <agent>-delft3d-cli/    same, plus CLAUDE.md with Delft3D-FM paths/commands
 bin/                    build artifacts collected by build.sh (*.sif images + bash_*.sh launchers)
 build.sh                builds every */Apptainer.def and collects artifacts into bin/
@@ -23,7 +23,7 @@ coding_agents_presentation/  slides/plan for introducing these agents to colleag
 skills/                 shared Claude Code skills (e.g. weather-agent) available across containers
 ```
 
-Each agent directory is self-contained: its `Apptainer.def` defines the container image, `build_<agent>.sh` builds it, and `bash_<agent>.sh` launches a shell inside it with the current working directory mounted at `/workspace`.
+Each agent directory is self-contained: its `Apptainer.def` defines the container image, `build_<agent>.sh` builds it, and `bash_<agent>.sh` launches a shell inside it with the current working directory mounted at the same absolute path as on the host.
 
 ## Conventions to follow
 
@@ -37,9 +37,12 @@ Each agent directory is self-contained: its `Apptainer.def` defines the containe
 
 This repo exists specifically to sandbox LLM agents via Apptainer so their file access stays inside the mounted workspace. When modifying launcher scripts or `Apptainer.def` files, preserve that isolation boundary (e.g. `--no-home`, explicit bind mounts) rather than loosening it — see README.md's "A word of caution" section for the full rationale.
 
+## GUI and browser launch note
+
+Inside these containers, GUI applications may work when launched directly from the interactive shell, but agent-executed commands can run in a reduced subprocess environment. If you need to launch a browser or other X11 application from an agent action, prefer preserving or explicitly passing the current session variables such as `DISPLAY`, `XAUTHORITY`, `DBUS_SESSION_BUS_ADDRESS`, and `XDG_RUNTIME_DIR`, or fall back to a manual shell command if needed.
+
 ## Where to look for more detail
 
 - [README.md](README.md) — project overview, agent status table, running containers, X11/GPU passthrough
 - `plan.md` — current priorities and open work
-- `<agent>-cli/README.md` — per-agent test notes
 - `<agent>-delft3d-cli/CLAUDE.md` — Delft3D-FM paths, executables, run commands

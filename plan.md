@@ -2,11 +2,11 @@
 
 ## Goal
 
-Provide a safe, sandboxed way to try and compare CLI-based LLM coding agents (Copilot CLI, Codex CLI, Mistral Vibe CLI, Claude Code, Gemini CLI), each packaged as an Apptainer container, so they can be evaluated without risking the host system or exposing more data than intended. See [README.md](README.md) for full rationale.
+Provide a safe, sandboxed way to try and compare CLI-based LLM coding agents (Copilot CLI, Codex CLI, Mistral Vibe CLI, Claude Code, Antigravity CLI), each packaged as an Apptainer container, so they can be evaluated without risking the host system or exposing more data than intended. See [README.md](README.md) for full rationale.
 
 
 Shared infrastructure already in place across all containers:
-- Isolated `.apptainer-home` per container, host cwd mounted at `/workspace`
+- Isolated `.apptainer-home` per container, host cwd mounted at the same absolute path as on the host
 - `pixi` for Python/R/native package management inside containers
 - X11/`DISPLAY` passthrough for GUI tools (e.g. matplotlib)
 - NVIDIA GPU passthrough (`--nv`) auto-detected via `nvidia-smi`
@@ -20,7 +20,7 @@ Shared infrastructure already in place across all containers:
 ## Out of scope (for now)
 
 - Non-CLI agents (VSCode extensions, web-based chat) — this repo is specifically about the CLI/container story.
-- Deep evaluation/benchmarking harness — current testing is manual, documented per-agent in each `<agent>-cli/README.md`.
+- Deep evaluation/benchmarking harness — current testing is manual.
 - Aider or other agents not already listed in the status tables above, unless a specific need arises.
 
 ## TODO / Next steps
@@ -32,11 +32,11 @@ Shared infrastructure already in place across all containers:
 - [x] **Make container working directories match the host `pwd`**
   - [x] **Modify `copilot-cli/bash_copilot.sh` so the container starts in the same working directory as the host `pwd`**
   - [x] **Add support for binding additional folders, with optional read-only mounts**
-- [ ] **Fix the other agents, based on copilot template:
-    - [ ] claude
-    - [ ] mistral
-    - [ ] codex
-    - [ ] gemini
+- [x] **Fix the other agents, based on copilot template**
+  - [x] claude
+  - [x] codex
+  - [x] mistral
+  - [x] antigravity
 - [x] **make installation easier**
   - [x] **generate container images and push them to ghcr.io**
   - [x] **automatically pull image if missing**
