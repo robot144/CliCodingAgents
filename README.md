@@ -81,7 +81,7 @@ curl -fsSL -o bash_copilot.sh \
 chmod +x bash_copilot.sh
 ./bash_copilot.sh
 ```
-
+    
 **ChatGPT Codex CLI**
 ```bash
 curl -fsSL -o bash_codex.sh \
@@ -110,7 +110,7 @@ For local builds, offline use, or contributing changes, clone the full repositor
 
 ### Building the containers
 
-There are ready-to-use container images for the agents available on GitHub Container Registry. You can pull these images directly with apptainer without needing to build them locally. This is done automatically by the launch scripts if the local image file is missing. However, if you want to build the containers locally, you can do so by following the instructions below.
+The method above is the quickest way to get started. However, if you want to build the containers locally, or if you want to customize the build, you can do so by following the instructions below.
 
 ```bash
 cd /path/to/repo/antigravity-cli
