@@ -62,6 +62,52 @@ Until recently, we also had Delft3D-FM-specific containers, but now we're moving
 - apptainer installed on the system. Many linux clusters have apptainer installed, but if you are running on a local machine, you may need to install it yourself. You can find instructions for installing apptainer on the [apptainer documentation](https://apptainer.org/docs/) page.
 - access to the agents (e.g., copilot cli, claude code, chatgpt codex-cli, aider) This may require signing up for an account and obtaining an API key, depending on the agent.
 
+### Quick install (single script, no clone)
+
+The fastest way to get started is with just a copy of one launch script. Each one is self-contained and will pull its matching container image from GitHub Container Registry automatically. Pick the agent you want:
+
+**Claude Code**
+```bash
+curl -fsSL -o bash_claude.sh \
+  https://raw.githubusercontent.com/robot144/CliCodingAgents/main/claude-cli/bash_claude.sh
+chmod +x bash_claude.sh
+./bash_claude.sh
+```
+
+**Microsoft GitHub Copilot CLI**
+```bash
+curl -fsSL -o bash_copilot.sh \
+  https://raw.githubusercontent.com/robot144/CliCodingAgents/main/copilot-cli/bash_copilot.sh
+chmod +x bash_copilot.sh
+./bash_copilot.sh
+```
+
+**ChatGPT Codex CLI**
+```bash
+curl -fsSL -o bash_codex.sh \
+  https://raw.githubusercontent.com/robot144/CliCodingAgents/main/codex-cli/bash_codex.sh
+chmod +x bash_codex.sh
+./bash_codex.sh
+```
+
+**Mistral Vibe CLI**
+```bash
+curl -fsSL -o bash_mistral.sh \
+  https://raw.githubusercontent.com/robot144/CliCodingAgents/main/mistral-cli/bash_mistral.sh
+chmod +x bash_mistral.sh
+./bash_mistral.sh
+```
+
+**Google Antigravity CLI**
+```bash
+curl -fsSL -o bash_antigravity.sh \
+  https://raw.githubusercontent.com/robot144/CliCodingAgents/main/antigravity-cli/bash_antigravity.sh
+chmod +x bash_antigravity.sh
+./bash_antigravity.sh
+```
+
+For local builds, offline use, or contributing changes, clone the full repository as described below.
+
 ### Building the containers
 
 There are ready-to-use container images for the agents available on GitHub Container Registry. You can pull these images directly with apptainer without needing to build them locally. This is done automatically by the launch scripts if the local image file is missing. However, if you want to build the containers locally, you can do so by following the instructions below.

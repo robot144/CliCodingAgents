@@ -40,6 +40,7 @@ Shared infrastructure already in place across all containers:
 - [x] **make installation easier**
   - [x] **generate container images and push them to ghcr.io**
   - [x] **automatically pull image if missing**
+  - [x] **test curl install and add it to the README.md**
 - [ ] **Move domain knowledge into installable skills**
   - [x] **Add `gh` for skill management**
   - [x] **Create a dummy skill and document it**
