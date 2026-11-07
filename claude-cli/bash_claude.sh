@@ -258,7 +258,8 @@ echo "Type 'claude' to start Claude Code inside the container."
 echo "You will be prompted to authenticate on first use."
 echo "Python environment manager 'pixi' is available (https://pixi.sh)."
 # Claude-specific: Claude Code documents CLAUDE.md rather than AGENTS.md.
-exec apptainer exec --no-home \
+exec apptainer exec --no-home  \
+  --env LD_LIBRARY_PATH=/.singularity.d/libs \
   --home "$home_dir_container" \
   --bind "$bind_path:$bind_path" \
   --bind "$home_dir_host:$home_dir_container" \
