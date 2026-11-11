@@ -8,3 +8,6 @@ mistral-cli/test/
 # pixi environments
 .pixi/*
 !.pixi/config.toml
+# testing
+claude-cli/test_*
+copilot-cli/test_*

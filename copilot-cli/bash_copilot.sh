@@ -259,6 +259,7 @@ if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "${XDG_RUNTIME_DIR}" ]]; then
 fi
 
 exec apptainer exec --no-home \
+  --env LD_LIBRARY_PATH=/.singularity.d/libs \
   --home "$home_dir_container" \
   --bind "$bind_path:$bind_path" \
   --bind "$home_dir_host:$home_dir_container" \
